@@ -701,6 +701,3 @@ db.users.deleteMany({ age: { $exists: false } });
 - Most queries and update operators start with a `$` (dollar sign).
 
 This documentation covers all the basics and advanced queries, updates, and deletions you need to work with MongoDB in the shell.
-<span style="display:none">[^1]</span>
-
-<div align="center">⁂</div>
