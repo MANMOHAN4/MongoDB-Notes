@@ -2,12 +2,6 @@
 
 ---
 
-## **Overview**
-
-This document reformats the professor’s lecture transcript into clear, readable notes you can study like documentation. It preserves all commands, examples, terminology, and explanations, without condensing content. The shell referenced is the **sh terminal** (MongoDB shell-like environment). The examples use a database called **appdb** and a **users** collection.
-
----
-
 ## **Starting in the Default Database**
 
 - When you open the sh terminal, you may see the word `test` in the prompt.
@@ -107,24 +101,6 @@ exit;
 
 ---
 
-## **Confirming and Switching to appdb**
-
-- In the terminal:
-
-```javascript
-use appdb
-show dbs
-```
-
-- The database may not exist yet; inserting data will create it.
-- To access the current database object:
-
-```javascript
-db;
-```
-
----
-
 ## **Insert One Document**
 
 - Access a collection by referencing it as a property on `db`. For example:
@@ -220,7 +196,6 @@ db.users.insertMany([
 ]);
 ```
 
-- If you make a typo or syntax error, the shell provides helpful error messages indicating what was wrong.
 - Verify:
 
 ```javascript
@@ -248,15 +223,15 @@ db.users.find().limit(2);
 - **Sort** by a field:
 
 ```javascript
-db.users.find().sort({ name: 1 }).limit(2); // ascending by name
-db.users.find().sort({ name: -1 }).limit(2); // descending by name
+db.users.find().sort({ name: 1 }).limit(2); // Ascending by name.
+db.users.find().sort({ name: -1 }).limit(2); // Descending by name.
 ```
 
 - **Sort by multiple fields:**
 
 ```javascript
-db.users.find().sort({ age: 1, name: -1 });
-db.users.find().sort({ age: -1, name: -1 });
+db.users.find().sort({ age: 1, name: -1 }); // Ascending by age. If age are identical, then sort descending by name.
+db.users.find().sort({ age: -1, name: -1 }); // Descending by age. If age are identical, then sort descending by name.
 ```
 
 - **Skip** results:
@@ -382,7 +357,7 @@ db.users.find({ age: { $exists: true } }); // includes bill with age: null
 
 ```javascript
 db.users.find({
-  age: { $gte: 20, $lte: 40 },
+  age: { $gte: 20, $lte: 40 }, // Find all users whose age is between 20 and 40 (inclusive).
 });
 ```
 
@@ -390,7 +365,7 @@ db.users.find({
 
 ```javascript
 db.users.find({
-  age: { $gte: 20, $lte: 40 },
+  age: { $gte: 20, $lte: 40 }, // Find all users named "kyle" whose age is between 20 and 40 (inclusive).
   name: "kyle",
 });
 ```
@@ -415,7 +390,7 @@ db.users.find({
 
 ```javascript
 db.users.find({
-  $or: [{ age: { $lte: 20 } }, { name: "kyle" }],
+  $or: [{ age: { $lte: 20 } }, { name: "kyle" }], // Find all users who are either 20 years old or younger, OR whose name is exactly "kyle".
 });
 ```
 
@@ -510,12 +485,7 @@ db.users.updateOne(
 ```
 
 - Using a field assignment without an atomic operator throws an error:
-  - “update document requires atomic operators.” Use `$set` for setting fields.
-- **Verify:**
-
-```javascript
-db.users.findOne({ age: 27 });
-```
+- “update document requires atomic operators.” Use `$set` for setting fields.
 
 - **Update by \_id (common pattern):**
 
@@ -524,7 +494,6 @@ db.users.updateOne(
   { _id: ObjectId("...paste-id-here...") },
   { $set: { name: "new name" } }
 );
-db.users.findOne({ _id: ObjectId("...paste-id-here...") });
 ```
 
 ---
@@ -554,7 +523,7 @@ db.users.updateOne(
 ```javascript
 db.users.updateOne(
   { _id: ObjectId("...") },
-  { $unset: { age: "" } } // value can be empty string; field is removed, not set to null
+  { $unset: { age: "" } } // Remove the "age" field from the matched document entirely (the value provided to $unset is ignored, not stored)
 );
 ```
 
@@ -604,19 +573,15 @@ db.users.find();
 - **Replace a document entirely:**
 
 ```javascript
+// Replace the entire document where age = 30 with { name: "john" }.
+// All existing fields (e.g., age, other attributes) are removed unless included in the new object.
 db.users.replaceOne(
   { age: 30 }, // finds the document (e.g., kyle)
   { name: "john" } // replaces the entire object with this new one
 );
 ```
 
-- **Verify:**
-
-```javascript
-db.users.find({ name: "john" });
-```
-
-- `replaceOne` deletes everything at that document and replaces it with what you provide. Usually, you want `update` (99.9% of the time) instead of replace, so you only change specific fields.
+- `replaceOne` overwrites the entire matched document with the replacement document you provide. In most cases you should use an update ($set) to change only specific fields instead of replacing the whole document.
 
 ---
 
