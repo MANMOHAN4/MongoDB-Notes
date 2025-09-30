@@ -704,5 +704,3 @@ This documentation covers all the basics and advanced queries, updates, and dele
 <span style="display:none">[^1]</span>
 
 <div align="center">⁂</div>
-
-[^1]: i-want-to-talk-about-are-just-basic-commands-that.md
