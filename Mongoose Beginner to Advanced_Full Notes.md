@@ -8,24 +8,6 @@ Knowing the basics of mongoose is great for building out projects, but understan
 
 ---
 
-### Project setup
-
-- Create a blank project and add a file named `script.js` (the filename can be anything) to run mongoose code interactively during development.
-- Initialize npm with `npm init -y`, and if npm is not installed, install Node.js first to get npm as part of the toolchain.
-- Install mongoose using `npm i mongoose`, and install `nodemon` as a dev dependency with `npm i -D nodemon` to auto‑reload the script on change.
-- Update `package.json` replacing the default test script with a dev script, for example: `"dev:start": "nodemon script.js"`, then run with `npm run dev:start` to execute `script.js` and auto‑restart on save; a quick test like `console.log('hi')` will show live reloads.
-
-```json
-// package.json (scripts snippet)
-{
-  "scripts": {
-    "dev:start": "nodemon script.js"
-  }
-}
-```
-
----
-
 ### Connecting to MongoDB
 
 - Require mongoose at the top of the script and call `mongoose.connect('mongodb://localhost/testdb')` where `testdb` is the desired database name; on save, the process connects even if no immediate output appears.
@@ -74,13 +56,13 @@ module.exports = mongoose.model("User", userSchema);
 
 ### Creating and saving documents
 
-- In `script.js`, require the user model with `const User = require('./user')` and instantiate with `new User({ name: 'kyle', age: 26 })` to create a local instance not yet persisted.
+- In `script.js`, require the user model with `const User = require('./user')` and instantiate with `new User({ name: 'Ram', age: 26 })` to create a local instance not yet persisted.
 - Persist changes using `await user.save()` (inside an `async` function) or `.then(...)` on the returned promise; the recommended approach is wrapping logic in an `async function run() { ... }` and calling `run()`.
 - Logging the saved user shows an auto‑generated `_id` and a `__v` version key managed by mongoose internally, indicating a successful persist of the object.
 
 ```js
 async function run() {
-  const user = new User({ name: "kyle", age: 26 });
+  const user = new User({ name: "Ram", age: 26 });
   await user.save();
   console.log(user);
 }
@@ -95,7 +77,7 @@ run();
 - Both approaches support `await` for ergonomic async control flow and provide identical saved results including `_id` and `__v` fields.
 
 ```js
-const user = await User.create({ name: "kyle", age: 26 });
+const user = await User.create({ name: "Ram", age: 26 });
 ```
 
 ---
@@ -146,7 +128,7 @@ const userSchema = new mongoose.Schema({
 
 ```js
 try {
-  await User.create({ name: "kyle", age: "26" });
+  await User.create({ name: "Ram", age: "26" });
 } catch (e) {
   console.log(e.message);
   // console.log(e.errors.age) // detailed error info
@@ -226,8 +208,8 @@ age: {
 
 ```js
 const one = await User.findById(id);
-const many = await User.find({ name: "kyle" });
-const any = await User.exists({ name: "kyle" });
+const many = await User.find({ name: "Ram" });
+const any = await User.exists({ name: "Ram" });
 ```
 
 ---
@@ -238,7 +220,7 @@ const any = await User.exists({ name: "kyle" });
 - Logging the result object reveals whether a deletion occurred, which is helpful for asserting side effects in scripts and tests.
 
 ```js
-const result = await User.deleteOne({ name: "kyle" });
+const result = await User.deleteOne({ name: "Ram" });
 // result.deletedCount === 1
 ```
 
@@ -246,13 +228,13 @@ const result = await User.deleteOne({ name: "kyle" });
 
 ### Query builder (chainable “where” style)
 
-- Mongoose queries can be built fluently: `User.where('name').equals('kyle').where('age').gt(12)` mirrors MongoDB operators with chainable helpers like `.gt()`, `.lt()`, `.limit()`, and `.select()`.
+- Mongoose queries can be built fluently: `User.where('name').equals('Ram').where('age').gt(12)` mirrors MongoDB operators with chainable helpers like `.gt()`, `.lt()`, `.limit()`, and `.select()`.
 - Conditions can be chained arbitrarily, for example constraining an age range while matching a specific name, and adding a `.limit(2)` to return only two results.
 - `.select('age')` limits returned fields, while other variants also support excluding fields or combining multiple selections per query.
 
 ```js
 const q = await User.where("name")
-  .equals("kyle")
+  .equals("Ram")
   .where("age")
   .gt(12)
   .lt(31)
@@ -296,7 +278,7 @@ userSchema.methods.sayHi = function () {
 
 - Add model‑level methods via `userSchema.statics` for operations that conceptually belong to the model rather than a single instance, such as a custom “find by name” helper.
 - A typical implementation normalizes input and returns a query: for example, `findByName(name)` that performs a case‑insensitive match with a regex.
-- Static methods are invoked on the model: `const users = await User.findByName('kyle')`, returning a query or results depending on composition.
+- Static methods are invoked on the model: `const users = await User.findByName('Ram')`, returning a query or results depending on composition.
 
 ```js
 userSchema.statics.findByName = function (name) {
@@ -310,7 +292,7 @@ userSchema.statics.findByName = function (name) {
 
 - Attach methods directly to queries with `userSchema.query`, which makes the helper available on the chain returned by `find`/`where` calls rather than on the model itself.
 - Example: `.byName(name)` that applies a case‑insensitive regex filter and can be composed with other query helpers and constraints in a single chain.
-- Use as `await User.find().byName('kyle')`, noting that query helpers cannot be called on the model directly (i.e., `User.byName` is invalid).
+- Use as `await User.find().byName('Ram')`, noting that query helpers cannot be called on the model directly (i.e., `User.byName` is invalid).
 
 ```js
 userSchema.query.byName = function (name) {
@@ -376,7 +358,7 @@ userSchema.pre("save", function () {
 
 ```js
 const user = await User.create({
-  name: "kyle",
+  name: "Ram",
   age: 26,
   hobbies: ["weightlifting", "bowling"],
   address: { street: "Main Street", city: "Example" },
@@ -463,14 +445,14 @@ const User = mongoose.model("User", userSchema);
 (async function run() {
   try {
     const user = await User.create({
-      name: "kyle",
+      name: "Ram",
       age: 26,
       email: "Test@Test.com",
     });
     user.name = "sally";
     await user.save();
 
-    const found = await User.find().byName("kyle").limit(2).select("age");
+    const found = await User.find().byName("Ram").limit(2).select("age");
     const one = await User.findById(user._id).populate("bestFriend");
 
     console.log(user.namedEmail);
