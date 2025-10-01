@@ -479,11 +479,3 @@ const User = mongoose.model("User", userSchema);
   }
 })();
 ```
-
----
-
-If a version with callouts, color‑coded badges, or an index is preferred, this can be layered on top without changing the preserved content or examples in this documentation.
-
-<div align="center">⁂</div>
-
-: paste.txt
