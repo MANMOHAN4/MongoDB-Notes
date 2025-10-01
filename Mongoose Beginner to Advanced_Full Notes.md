@@ -375,14 +375,6 @@ const user = await User.create({
 
 ---
 
-### Final notes and resources
-
-- The lecture closes by reiterating that mastering mongoose validations, query builders, population, methods, virtuals, and middleware elevates application code quality and maintainability beyond basic CRUD usage.
-- It mentions a free MongoDB cheat sheet download as a helpful companion for both MongoDB and mongoose workflows, encouraging use alongside these patterns and techniques.
-- With these tools, code benefits from centralized schema rules, clear error handling, and composable queries that mirror MongoDB while providing higher‑level developer ergonomics.
-
----
-
 ## Appendix: Common code patterns from the lecture
 
 ```js
