@@ -182,7 +182,7 @@ db.users.find();
 ```javascript
 db.users.insertMany([
   {
-    name: "kyle",
+    name: "Ram",
     age: 26,
     hobbies: ["weightlifting", "bowling"],
     address: { street: "123 Main Street" },
@@ -202,7 +202,7 @@ db.users.insertMany([
 db.users.find();
 ```
 
-- You should now see **kyle** (age 26, hobbies weightlifting and bowling, address) and **billy** (age 41, hobbies swimming and bowling, address), among the other users.
+- You should now see **Ram** (age 26, hobbies weightlifting and bowling, address) and **billy** (age 41, hobbies swimming and bowling, address), among the other users.
 
 ---
 
@@ -248,7 +248,7 @@ db.users.find().skip(1).limit(2); // skip the first; get the next two
 - **Equality by field:**
 
 ```javascript
-db.users.find({ name: "kyle" });
+db.users.find({ name: "Ram" });
 db.users.find({ age: 26 });
 ```
 
@@ -265,19 +265,19 @@ db.users.find({ age: "26" }); // returns nothing if age is stored as a number
 - **Include only name and age for a single match:**
 
 ```javascript
-db.users.find({ name: "kyle" }, { name: 1, age: 1 });
+db.users.find({ name: "Ram" }, { name: 1, age: 1 });
 ```
 
 - **Exclude \_id:**
 
 ```javascript
-db.users.find({ name: "kyle" }, { name: 1, age: 1, _id: 0 });
+db.users.find({ name: "Ram" }, { name: 1, age: 1, _id: 0 });
 ```
 
 - **Exclude a field (return all other fields):**
 
 ```javascript
-db.users.find({ name: "kyle" }, { age: 0 });
+db.users.find({ name: "Ram" }, { age: 0 });
 ```
 
 ---
@@ -316,13 +316,13 @@ db.users.find({ age: { $lt: 19 } });
 - **In a list of values:**
 
 ```javascript
-db.users.find({ name: { $in: ["kyle", "sally"] } });
+db.users.find({ name: { $in: ["Ram", "sally"] } });
 ```
 
 - **Not in a list:**
 
 ```javascript
-db.users.find({ name: { $nin: ["kyle", "sally"] } });
+db.users.find({ name: { $nin: ["Ram", "sally"] } });
 ```
 
 ---
@@ -365,8 +365,8 @@ db.users.find({
 
 ```javascript
 db.users.find({
-  age: { $gte: 20, $lte: 40 }, // Find all users named "kyle" whose age is between 20 and 40 (inclusive).
-  name: "kyle",
+  age: { $gte: 20, $lte: 40 }, // Find all users named "Ram" whose age is between 20 and 40 (inclusive).
+  name: "Ram",
 });
 ```
 
@@ -378,7 +378,7 @@ db.users.find({
 
 ```javascript
 db.users.find({
-  $and: [{ age: 26 }, { name: "kyle" }],
+  $and: [{ age: 26 }, { name: "Ram" }],
 });
 ```
 
@@ -390,11 +390,11 @@ db.users.find({
 
 ```javascript
 db.users.find({
-  $or: [{ age: { $lte: 20 } }, { name: "kyle" }], // Find all users who are either 20 years old or younger, OR whose name is exactly "kyle".
+  $or: [{ age: { $lte: 20 } }, { name: "Ram" }], // Find all users who are either 20 years old or younger, OR whose name is exactly "Ram".
 });
 ```
 
-- This returns **sally** (age <= 20) and **kyle** (name is kyle).
+- This returns **sally** (age <= 20) and **Ram** (name is Ram).
 
 ---
 
@@ -576,7 +576,7 @@ db.users.find();
 // Replace the entire document where age = 30 with { name: "john" }.
 // All existing fields (e.g., age, other attributes) are removed unless included in the new object.
 db.users.replaceOne(
-  { age: 30 }, // finds the document (e.g., kyle)
+  { age: 30 }, // finds the document (e.g., Ram)
   { name: "john" } // replaces the entire object with this new one
 );
 ```
