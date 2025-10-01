@@ -375,7 +375,7 @@ const user = await User.create({
 
 ---
 
-## Appendix: Common code patterns from the lecture
+## Appendix: Common code patterns
 
 ```js
 // Connect
